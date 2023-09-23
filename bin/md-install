@@ -322,6 +322,16 @@ cp Resource/dump.js $MonkeyDevPath/bin/dump.js
 cp Resource/dump.py $MonkeyDevPath/bin/dump.py
 chmod +x "$MonkeyDevPath/bin/dump.py"
 
+# 用新版fishhook 替换原来的fishhook, 解决闪退问题
+# /opt/MonkeyDev/templates/MonkeyAppLibrary.xctemplate/fishhook
+# /opt/MonkeyDev/templates/MonkeyAppMac.xctemplate/fishhook
+cp -rf Resource/fishhook   $MonkeyDevPath/templates/MonkeyAppLibrary.xctemplate/
+cp -rf Resource/fishhook   $MonkeyDevPath/templates/MonkeyAppMac.xctemplate/
+
+
+# 解决每次编译都要clean，否则就找不到可执行文件的问题
+cp -rf Resource/TemplateInfo.plist   $MonkeyDevPath/templates/MonkeyApp.xctemplate/
+
 #创建符号链接
 echo "Creating symlink to Xcode templates..."
 
@@ -379,5 +389,11 @@ if [[ $hasProductTypeForCommandLineTool != "true" ]]; then
 	toolDict=`readXcodeSpecificationById "$productTypesForMacOSXPath" "com.apple.product-type.tool"`
 	writeDictToSpecification "$specificationFile" "$toolDict"
 fi
+
+# 拷贝libstdc*库，解决找不到库的问题
+sudo cp Resource/1/* /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/usr/lib/
+sudo cp Resource/2/* /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib/
+sudo cp Resource/3/* /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/lib/
+sudo cp Resource/4/* /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk/usr/lib/
 
 exit 0
