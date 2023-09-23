@@ -1,5 +1,11 @@
 # MonkeyDev
 
+适配xcode 13.4.1
+根据网上资料，解决了三个问题
+1. libstdc*库找不到
+2. fishhook版本太旧造成的闪退
+3. 每次都需要clean, 否者报找不到可执行文件
+
 A modified version of iOSOpenDev
 
 * easy to install
